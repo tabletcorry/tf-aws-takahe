@@ -10,6 +10,7 @@ locals {
     TAKAHE_EMAIL_FROM        = "admin@${local.takahe_domain_name}"
     TAKAHE_AUTO_ADMIN_EMAIL  = "admin@${local.takahe_domain_name}"
     TAKAHE_USE_PROXY_HEADERS = "true"
+    SECRETS_ARN_HASH         = sha1(join(":", [for secret in values(local.primary_web_secrets) : secret.arn]))
     SECRETS_VERSIONS         = join(":", [for secret in values(local.primary_web_secrets) : secret.version])
     TAKAHE_EMAIL_USER        = aws_iam_access_key.ses.id
     TAKAHE_EMAIL_HOST        = "email-smtp.us-west-2.amazonaws.com"
