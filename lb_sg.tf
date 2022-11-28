@@ -1,10 +1,9 @@
 resource "aws_security_group" "lb" {
-  name        = "lb"
-  description = "Allow TLS inbound traffic"
+  name        = "${local.module_tags.module}-${var.name}-alb"
   vpc_id      = module.vpc.vpc_id
 }
 
-resource "aws_security_group_rule" "lb" {
+resource "aws_security_group_rule" "lb_egress" {
   security_group_id = aws_security_group.lb.id
   type              = "egress"
   to_port           = 0

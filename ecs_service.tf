@@ -1,6 +1,6 @@
 resource "aws_ecs_service" "web" {
   name            = "web"
-  cluster         = aws_ecs_cluster.primary.id
+  cluster         = aws_ecs_cluster.self.id
   task_definition = aws_ecs_task_definition.primary_web.arn
   desired_count   = 1
 
@@ -11,14 +11,14 @@ resource "aws_ecs_service" "web" {
 
   network_configuration {
     subnets          = module.vpc.public_subnets
-    security_groups  = [aws_security_group.ecs_primary_web.id]
+    security_groups  = [aws_security_group.ecs_web.id]
     assign_public_ip = true
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.web.arn
+    target_group_arn = aws_lb_target_group.ecs_web.arn
     container_name   = "web"
-    container_port   = 8000
+    container_port   = local.web_listen_port
   }
 
   propagate_tags = "TASK_DEFINITION"
@@ -26,7 +26,7 @@ resource "aws_ecs_service" "web" {
 
 resource "aws_ecs_service" "stator" {
   name            = "stator"
-  cluster         = aws_ecs_cluster.primary.id
+  cluster         = aws_ecs_cluster.self.id
   task_definition = aws_ecs_task_definition.primary_stator.arn
   desired_count   = 1
 
@@ -37,7 +37,7 @@ resource "aws_ecs_service" "stator" {
 
   network_configuration {
     subnets          = module.vpc.public_subnets
-    security_groups  = [aws_security_group.ecs_primary_stator.id]
+    security_groups  = [aws_security_group.ecs_stator.id]
     assign_public_ip = true
   }
 

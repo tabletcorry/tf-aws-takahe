@@ -1,5 +1,5 @@
-resource "aws_lb" "app" {
-  name               = "app"
+resource "aws_lb" "self" {
+  name               = "${local.module_tags.module}-${var.name}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb.id]
@@ -10,8 +10,8 @@ resource "aws_lb" "app" {
   ip_address_type = "dualstack"
 }
 
-resource "aws_lb_listener" "web" {
-  load_balancer_arn = aws_lb.app.arn
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.self.arn
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
@@ -19,15 +19,15 @@ resource "aws_lb_listener" "web" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.web.arn
+    target_group_arn = aws_lb_target_group.ecs_web.arn
   }
 
   depends_on = [aws_acm_certificate_validation.lb]
 }
 
-resource "aws_lb_target_group" "web" {
-  name_prefix = "takahe"
-  port        = 8000
+resource "aws_lb_target_group" "ecs_web" {
+  name        = "${local.module_tags.module}-${var.name}-ecs-web"
+  port        = local.web_listen_port
   protocol    = "HTTP"
   vpc_id      = module.vpc.vpc_id
   target_type = "ip"

@@ -12,8 +12,3 @@ resource "aws_acm_certificate_validation" "lb" {
   certificate_arn         = aws_acm_certificate.lb.arn
   validation_record_fqdns = [for record in aws_route53_record.lb_acm : record.fqdn]
 }
-
-moved {
-  from = aws_acm_certificate_validation.cloudfront
-  to   = aws_acm_certificate_validation.lb
-}

@@ -1,7 +1,7 @@
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "ipv6"
+  name = "${local.module_tags.module}-${var.name}"
   cidr = "10.0.0.0/16"
 
   azs              = ["${local.region}a", "${local.region}b"]

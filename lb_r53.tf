@@ -5,8 +5,8 @@ resource "aws_route53_record" "lb_a" {
 
   alias {
     evaluate_target_health = false
-    name                   = "dualstack.${aws_lb.app.dns_name}"
-    zone_id                = aws_lb.app.zone_id
+    name                   = "dualstack.${aws_lb.self.dns_name}"
+    zone_id                = aws_lb.self.zone_id
 
   }
 }
@@ -18,8 +18,8 @@ resource "aws_route53_record" "lb_aaaa" {
 
   alias {
     evaluate_target_health = false
-    name                   = "dualstack.${aws_lb.app.dns_name}"
-    zone_id                = aws_lb.app.zone_id
+    name                   = "dualstack.${aws_lb.self.dns_name}"
+    zone_id                = aws_lb.self.zone_id
   }
 }
 

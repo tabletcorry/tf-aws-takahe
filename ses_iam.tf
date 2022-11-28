@@ -1,9 +1,9 @@
-resource "aws_iam_user" "ses" {
-  name = "takahe-${var.name}-ses"
+resource "aws_iam_user" "ses_sendemail" {
+  name = "${local.module_tags.module}-${var.name}-ses-sendemail"
 }
 
-resource "aws_iam_user_policy" "ses" {
-  user = aws_iam_user.ses.name
+resource "aws_iam_user_policy" "ses_sendemail" {
+  user = aws_iam_user.ses_sendemail.name
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -22,6 +22,6 @@ resource "aws_iam_user_policy" "ses" {
   })
 }
 
-resource "aws_iam_access_key" "ses" {
-  user = aws_iam_user.ses.name
+resource "aws_iam_access_key" "ses_sendemail" {
+  user = aws_iam_user.ses_sendemail.name
 }
