@@ -15,10 +15,10 @@ resource "aws_ssm_parameter" "django_web_secret_key" {
 
 }
 
-resource "aws_ssm_parameter" "ses_sendmail_password" {
-  name  = "/${local.module_tags.module}/${var.name}/ses_sendmail_password"
+resource "aws_ssm_parameter" "email_server" {
+  name  = "/${local.module_tags.module}/${var.name}/email_server"
   type  = "SecureString"
-  value = aws_iam_access_key.ses_sendemail.ses_smtp_password_v4
+  value = "smtp://${aws_iam_access_key.ses_sendemail.id}:${aws_iam_access_key.ses_sendemail.ses_smtp_password_v4}@email-smtp.${data.aws_region.self.name}.amazonaws.com:587/?tls=true"
 }
 
 resource "aws_ssm_parameter" "sentry_dsn" {

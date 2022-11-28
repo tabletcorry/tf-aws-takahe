@@ -37,6 +37,26 @@ resource "aws_iam_role_policy" "ecs_execution_ssm_param_read" {
           for secret in local.primary_web_secrets : secret.arn
         ]
       },
+      {
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:ecr:${data.aws_region.self.name}:${data.aws_caller_identity.self.account_id}:repository/${var.ecr_name}"
+        ]
+      },
+      {
+        Action = [
+          "ecr:GetAuthorizationToken"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "*"
+        ]
+      },
     ]
   })
 }

@@ -1,8 +1,8 @@
 locals {
   base_web_secrets = {
-    PGPASSWORD            = aws_ssm_parameter.rds_root_password
-    TAKAHE_SECRET_KEY     = aws_ssm_parameter.django_web_secret_key
-    TAKAHE_EMAIL_PASSWORD = aws_ssm_parameter.ses_sendmail_password
+    PGPASSWORD          = aws_ssm_parameter.rds_root_password
+    TAKAHE_SECRET_KEY   = aws_ssm_parameter.django_web_secret_key
+    TAKAHE_EMAIL_SERVER = aws_ssm_parameter.email_server
   }
   primary_web_secrets = merge(
     local.base_web_secrets,
@@ -15,16 +15,12 @@ locals {
     TAKAHE_USE_PROXY_HEADERS = "true"
     SECRETS_ARN_HASH         = sha1(join(":", [for secret in values(local.primary_web_secrets) : secret.arn]))
     SECRETS_VERSIONS         = join(":", [for secret in values(local.primary_web_secrets) : secret.version])
-    TAKAHE_EMAIL_USER        = aws_iam_access_key.ses_sendemail.id
-    TAKAHE_EMAIL_HOST        = "email-smtp.${data.aws_region.self.name}.amazonaws.com"
-    TAKAHE_EMAIL_PORT        = "587"
     PGHOST                   = aws_db_instance.self.address
     PGPORT                   = "5432"
     PGUSER                   = aws_db_instance.self.username
     PGDATABASE               = aws_db_instance.self.db_name
-    TAKAHE_MEDIA_BUCKET      = aws_s3_bucket.media.bucket
     TAKAHE_SECURE_HEADER     = "X-Forwarded-Proto"
-    TAKAHE_MEDIA_BACKEND     = "s3"
+    TAKAHE_MEDIA_BACKEND     = "s3:///${aws_s3_bucket.media.bucket}"
   }
   primary_web_environment = merge(
     local.base_web_environment,
@@ -42,10 +38,15 @@ resource "aws_ecs_task_definition" "primary_web" {
   execution_role_arn = aws_iam_role.ecs_execution.arn
   task_role_arn      = aws_iam_role.ecs_task_web.arn
 
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "ARM64"
+  }
+
   container_definitions = jsonencode([
     {
       name      = "web"
-      image     = "jointakahe/takahe:latest"
+      image     = local.image_address
       essential = true
       environment = [
         for key, value in local.primary_web_environment : { "name" : "${key}", "value" : "${value}" }
@@ -76,7 +77,7 @@ resource "aws_ecs_task_definition" "primary_web" {
     },
     {
       name      = "migrate"
-      image     = "jointakahe/takahe:latest"
+      image     = local.image_address
       essential = false
       environment = [
         for key, value in local.primary_web_environment : { "name" : "${key}", "value" : "${value}" }
@@ -107,10 +108,15 @@ resource "aws_ecs_task_definition" "primary_stator" {
   execution_role_arn = aws_iam_role.ecs_execution.arn
   task_role_arn      = aws_iam_role.ecs_task_stator.arn
 
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "ARM64"
+  }
+
   container_definitions = jsonencode([
     {
       name      = "stator"
-      image     = "jointakahe/takahe:latest"
+      image     = local.image_address
       essential = true
       environment = [
         for key, value in local.primary_web_environment : { "name" : "${key}", "value" : "${value}" }

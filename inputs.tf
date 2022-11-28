@@ -45,3 +45,13 @@ variable "domain_prefix_parts" {
   default     = []
   description = "Overrides automatic domain name creation. Prepends these parts on primary_domain_name"
 }
+
+variable "ecr_name" {
+  type    = string
+  default = ""
+}
+
+variable "docker_image_label" {
+  type    = string
+  default = "latest"
+}
