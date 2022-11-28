@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ecs_execution" {
-  name = "${local.module_tags.module}-${var.name}-ecs-execution"
+  name               = "${local.module_tags.module}-${var.name}-ecs-execution"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -86,7 +86,7 @@ EOF
 
 
 resource "aws_iam_role" "ecs_task_web" {
-  name = "${local.module_tags.module}-${var.name}-ecs-task-web"
+  name               = "${local.module_tags.module}-${var.name}-ecs-task-web"
   assume_role_policy = local.ecs_task_assume_role_policy
 }
 
@@ -97,7 +97,7 @@ resource "aws_iam_role_policy" "ecs_task_web_s3" {
 }
 
 resource "aws_iam_role" "ecs_task_stator" {
-  name = "${local.module_tags.module}-${var.name}-ecs-task-stator"
+  name               = "${local.module_tags.module}-${var.name}-ecs-task-stator"
   assume_role_policy = local.ecs_task_assume_role_policy
 }
 

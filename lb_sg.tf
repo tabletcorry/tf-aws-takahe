@@ -1,6 +1,6 @@
 resource "aws_security_group" "lb" {
-  name        = "${local.module_tags.module}-${var.name}-alb"
-  vpc_id      = module.vpc.vpc_id
+  name   = "${local.module_tags.module}-${var.name}-alb"
+  vpc_id = module.vpc.vpc_id
 }
 
 resource "aws_security_group_rule" "lb_egress" {

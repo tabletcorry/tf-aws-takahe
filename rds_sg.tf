@@ -1,6 +1,6 @@
 resource "aws_security_group" "rds" {
-  name        = "${local.module_tags.module}-${var.name}-rds"
-  vpc_id      = module.vpc.vpc_id
+  name   = "${local.module_tags.module}-${var.name}-rds"
+  vpc_id = module.vpc.vpc_id
 }
 
 resource "aws_security_group_rule" "rds_egress" {

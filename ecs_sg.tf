@@ -1,6 +1,6 @@
 resource "aws_security_group" "ecs_web" {
-  name        = "${local.module_tags.module}-${var.name}-ecs-web"
-  vpc_id      = module.vpc.vpc_id
+  name   = "${local.module_tags.module}-${var.name}-ecs-web"
+  vpc_id = module.vpc.vpc_id
 }
 
 resource "aws_security_group_rule" "ecs_web_egress" {
@@ -23,8 +23,8 @@ resource "aws_security_group_rule" "ecs_web_ingress_lb" {
 }
 
 resource "aws_security_group" "ecs_stator" {
-  name        = "${local.module_tags.module}-${var.name}-ecs-stator"
-  vpc_id      = module.vpc.vpc_id
+  name   = "${local.module_tags.module}-${var.name}-ecs-stator"
+  vpc_id = module.vpc.vpc_id
 }
 
 resource "aws_security_group_rule" "ecs_stator_egress" {

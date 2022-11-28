@@ -6,7 +6,7 @@ locals {
   }
   primary_web_secrets = merge(
     local.base_web_secrets,
-    var.enable_sentry ? {SENTRY_DSN = aws_ssm_parameter.sentry_dsn} : {}
+    var.enable_sentry ? { SENTRY_DSN = aws_ssm_parameter.sentry_dsn } : {}
   )
   base_web_environment = {
     TAKAHE_MAIN_DOMAIN       = local.takahe_domain_name
@@ -23,12 +23,12 @@ locals {
     PGUSER                   = aws_db_instance.self.username
     PGDATABASE               = aws_db_instance.self.db_name
     TAKAHE_MEDIA_BUCKET      = aws_s3_bucket.media.bucket
-    TAKAHE_SECURE_HEADER = "X-Forwarded-Proto"
-    TAKAHE_MEDIA_BACKEND = "s3"
+    TAKAHE_SECURE_HEADER     = "X-Forwarded-Proto"
+    TAKAHE_MEDIA_BACKEND     = "s3"
   }
   primary_web_environment = merge(
     local.base_web_environment,
-    var.hazardous_dangerous_django_debug ? {TAKAHE__SECURITY_HAZARD__DEBUG = "True"} : {}
+    var.hazardous_dangerous_django_debug ? { TAKAHE__SECURITY_HAZARD__DEBUG = "True" } : {}
   )
 }
 
