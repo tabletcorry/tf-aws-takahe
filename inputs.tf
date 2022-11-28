@@ -55,3 +55,13 @@ variable "docker_image_label" {
   type    = string
   default = "latest"
 }
+
+variable "lb_ingress_ipv4" {
+  type = list(string)
+  default = ["0.0.0.0/8"]
+}
+
+variable "lb_ingress_ipv6" {
+  type = list(string)
+  default = ["::/0"]
+}

@@ -19,6 +19,6 @@ resource "aws_security_group_rule" "lb_ingress" {
   to_port           = 443
   protocol          = "tcp"
   from_port         = 443
-  cidr_blocks       = ["99.7.60.76/32"]
-  ipv6_cidr_blocks  = ["2600:1700:4a30:1e5f::/64"]
+  cidr_blocks       = var.lb_ingress_ipv4
+  ipv6_cidr_blocks  = var.lb_ingress_ipv6
 }
