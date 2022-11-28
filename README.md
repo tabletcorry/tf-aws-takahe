@@ -20,9 +20,11 @@ module "takahe" {
 
   enable_sentry = true
 
+  # Optional! If not provided, defaults to Docker Hub latest
   ecr_name = module.takahe_build.ecr_name
 }
 
+# Optional!
 module "takahe_build" {
   source = "git::https://github.com/tabletcorry/tf-aws-takahe.git//modules/codebuild"
 

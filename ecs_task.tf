@@ -11,7 +11,7 @@ locals {
   base_web_environment = {
     TAKAHE_MAIN_DOMAIN       = local.takahe_domain_name
     TAKAHE_EMAIL_FROM        = length(var.takahe_email_from) == 0 ? "noreply@${local.takahe_domain_name}" : var.takahe_email_from
-    TAKAHE_AUTO_ADMIN_EMAIL  = length(var.takahe_email_from) == 0 ? "admin@${local.takahe_domain_name}" : var.takahe_email_from
+    TAKAHE_AUTO_ADMIN_EMAIL  = length(var.takahe_auto_admin_email) == 0 ? "admin@${local.takahe_domain_name}" : var.takahe_auto_admin_email
     TAKAHE_USE_PROXY_HEADERS = "true"
     SECRETS_ARN_HASH         = sha1(join(":", [for secret in values(local.primary_web_secrets) : secret.arn]))
     SECRETS_VERSIONS         = join(":", [for secret in values(local.primary_web_secrets) : secret.version])
