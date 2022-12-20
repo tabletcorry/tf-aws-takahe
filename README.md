@@ -57,7 +57,7 @@ module "takahe" {
 
 # Optional! Only required if you want to build your instance from source.
 module "takahe_build" {
-  source = "git::https://github.com/tabletcorry/tf-aws-takahe.git//modules/codebuild"
+  source = "git::https://github.com/tabletcorry/tf-aws-takahe.git//codebuild"
 
   github_url = "https://github.com/tabletcorry/takahe.git"
   name = "testing"
