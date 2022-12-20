@@ -1,6 +1,37 @@
 # tf-aws-takahe
 
-Completely deploys a functional Takahe system to AWS Fargate.
+Contains Terraform required to deploy Takahē. Currently supports AWS Fargate and Fly.io.
+
+## Fly.io
+
+Deploys secondary infrastructure required for a Takahē instance in Fly.io.
+
+Specifically, creates the following:
+* SES identity (for sending email)
+* S3 Bucket (for media)
+* Cloudfront distribution (for fronting S3)
+* Route53 records (for A, AAAA, and CAA records)
+
+Currently assumes that your DNS zone is in route53. If yours isn't, please delegate a subdomain to route53
+(or create a patch to make that TF optional).
+
+Example usage:
+
+```hcl
+module "takahe_fly" {
+  source = "git::https://github.com/tabletcorry/tf-aws-takahe.git//hosted_flyio"
+  acme_challenge_cname = "CNAME provided by Fly for ACME challenge"
+  name = "takahe-fly"
+  primary_domain_name = "Domain Zone for route53"
+  domain_prefix_parts = ["takahe"]
+  target_ipv4 = "IPv4 provided by Fly"
+  target_ipv6 = "IPv6 provided by Fly"
+}
+```
+
+## AWS
+
+Completely deploys a functional Takahē system to AWS Fargate.
 
 Optimization still possible, but as currently implemented this will cost ~$48/month (plus usage-based costs).
 
@@ -12,7 +43,7 @@ Example usage:
 
 ```hcl
 module "takahe" {
-  source = "git::https://github.com/tabletcorry/tf-aws-takahe.git"
+  source = "git::https://github.com/tabletcorry/tf-aws-takahe.git//hosted_aws"
 
   name = "testing"
 
@@ -24,7 +55,7 @@ module "takahe" {
   ecr_name = module.takahe_build.ecr_name
 }
 
-# Optional!
+# Optional! Only required if you want to build your instance from source.
 module "takahe_build" {
   source = "git::https://github.com/tabletcorry/tf-aws-takahe.git//modules/codebuild"
 

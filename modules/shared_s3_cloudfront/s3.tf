@@ -1,9 +1,9 @@
 resource "aws_s3_bucket" "origin" {
-  bucket = var.name
+  bucket_prefix = var.name
 }
 
 resource "aws_s3_bucket" "origin_logs" {
-  bucket = "${var.name}-logs"
+  bucket_prefix = "${var.name}-logs"
 }
 
 resource "aws_s3_bucket_acl" "origin" {
