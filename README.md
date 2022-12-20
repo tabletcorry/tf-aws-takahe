@@ -31,6 +31,9 @@ module "takahe_fly" {
 
 ## AWS
 
+Note: AWS should work for 0.4.0, but needs updates beyond that. I will return to the AWS setup soon, file an issue if
+this affects you.
+
 Completely deploys a functional Takahē system to AWS Fargate.
 
 Optimization still possible, but as currently implemented this will cost ~$48/month (plus usage-based costs).
