@@ -38,7 +38,3 @@ resource "aws_route53_record" "spf" {
   records = ["v=spf1 include:amazonses.com ~all"]
   zone_id = data.aws_route53_zone.self.zone_id
 }
-
-resource "aws_ses_email_identity" "ses_admin" {
-  email = "admin@tabletcorry.com"
-}
