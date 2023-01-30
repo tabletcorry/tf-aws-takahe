@@ -46,14 +46,26 @@ variable "domain_prefix_parts" {
   description = "Overrides automatic domain name creation. Prepends these parts on primary_domain_name"
 }
 
-variable "acme_challenge_cname" {
+variable "acme_web_challenge_cname" {
   type = string
 }
 
-variable "target_ipv4" {
+variable "target_web_ipv4" {
   type = string
 }
 
-variable "target_ipv6" {
+variable "target_web_ipv6" {
+  type = string
+}
+
+variable "acme_inbox_challenge_cname" {
+  type = string
+}
+
+variable "target_inbox_ipv4" {
+  type = string
+}
+
+variable "target_inbox_ipv6" {
   type = string
 }
