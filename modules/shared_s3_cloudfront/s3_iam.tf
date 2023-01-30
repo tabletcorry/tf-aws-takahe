@@ -14,8 +14,13 @@ resource "aws_iam_user_policy" "s3" {
           "s3:GetObjectAcl",
           "s3:GetObjectAttributes",
           "s3:PutObject",
+          "s3:PutObjectAcl",
           "s3:GetBucketLocation",
           "s3:DeleteObject",
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+          "s3:ListMultipartUploadParts",
+          "s3:AbortMultipartUpload"
         ]
         Effect = "Allow"
         Resource = [
