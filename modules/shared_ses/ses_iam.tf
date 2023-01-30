@@ -15,7 +15,6 @@ resource "aws_iam_user_policy" "ses_sendemail" {
         Effect = "Allow"
         Resource = [
           aws_ses_domain_identity.self.arn,
-          aws_ses_email_identity.ses_admin.arn,
         ]
       },
     ]
